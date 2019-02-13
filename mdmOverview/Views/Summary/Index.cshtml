@@ -1,0 +1,296 @@
+﻿@model mdmOverview.Models.dtoRawInterfaceOverallSummary
+@{
+    ViewBag.Title = "Summary Master Data";
+}
+
+<div class="row">
+    <div class="col-lg-4 col-md-3 col-sm-12">
+        <div class="card card-stats">
+            <div class="card-header card-header-success card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">info_outline</i>
+                </div>
+                <p class="card-category">Inserts</p>
+                <h3 class="card-title">@Model.insertcount</h3>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">date_range</i> Last 8 Days
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-3 col-sm-12">
+        <div class="card card-stats">
+            <div class="card-header card-header-warning card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">edit</i>
+                </div>
+                <p class="card-category">Updates</p>
+                <h3 class="card-title">
+                    @Model.updatecount
+                </h3>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">date_range</i> Last 8 Days
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-3 col-sm-12">
+        <div class="card card-stats">
+            <div class="card-header card-header-danger card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">error</i>
+                </div>
+                <p class="card-category">Errors</p>
+                <h3 class="card-title">@Model.errorcount</h3>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">date_range</i> Last 8 Days
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="card card-chart">
+            <div class="card-header card-header-success">
+                <div class="ct-chart" id="insertChart"></div>
+            </div>
+            <div class="card-body">
+                <h4 class="card-title">Inserts</h4>
+                <hr />
+                <table class="table table-condensed table-striped">
+                   @foreach(var item in Model.insertsummary)
+                   {
+                        <tr><td>@item.cat</td><td>@item.tot</td></tr>
+                   }
+                </table>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">access_time</i> updated 4 minutes ago
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-chart">
+            <div class="card-header card-header-warning">
+                <div class="ct-chart" id="updateChart"></div>
+            </div>
+            <div class="card-body">
+                <h4 class="card-title">Updates</h4>
+                <hr />
+                <table class="table table-condensed table-striped">
+                    @foreach (var item in Model.updatesummary)
+                    {
+                        <tr><td>@item.cat</td><td>@item.tot</td></tr>
+                    }
+                </table>
+
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">edit</i> updated 2 days ago
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-chart">
+            <div class="card-header card-header-danger">
+                <div class="ct-chart" id="errorChart"></div>
+            </div>
+            <div class="card-body">
+                <h4 class="card-title">Errors</h4>
+                <hr />
+                <table class="table table-condensed table-striped">
+                    @foreach (var item in Model.errorsummary)
+                    {
+                        <tr><td>@item.cat</td><td>@item.tot</td></tr>
+                    }
+                </table>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">access_time</i> updated 2 days ago
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        home = {
+            xupdatedata: [],
+            yupdatedata: [],
+            xinsertdata: [],
+            yinsertdata: [],
+            xerrordata: [],
+            yerrordata: [],
+            initDashboardPageCharts: function () {
+                if ($('#updateChart').length != 0 || $('#insertChart').length != 0 || $('#errorChart').length != 0) {
+                    /* ----------==========     Daily Sales Chart initialization    ==========---------- */
+                    dataUpdateChart = {
+                        labels: this.xupdatedata,
+                        series: this.yupdatedata
+                    };
+                    optionsUpdateChart = {
+                        low: 0,
+                        high: @Model.updatemax, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+                        chartPadding: {
+                            top: 0,
+                            right: 0,
+                            bottom: 0,
+                            left: 0
+                        }, plugins: [
+                            Chartist.plugins.tooltip()
+                        ],
+                    }
+
+                    var updateChart = new Chartist.Bar('#updateChart', dataUpdateChart, optionsUpdateChart);
+                    md.startAnimationForLineChart(updateChart);
+                    /* ----------==========     Error Chart initialization    ==========---------- */
+                    dataErrorChart = {
+                        labels: this.xerrordata,
+                        series: this.yerrordata
+                    };
+
+                    optionsErrorChart = {
+                        lineSmooth: Chartist.Interpolation.cardinal({
+                            tension: 0
+                        }),
+                        low: 0,
+                        high: @Model.errormax, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+                        chartPadding: {
+                            top: 0,
+                            right: 0,
+                            bottom: 0,
+                            left: 0
+                        }, plugins: [
+                            Chartist.plugins.tooltip()
+                        ],
+                    }
+
+                    var errorChart = new Chartist.Bar('#errorChart', dataErrorChart, optionsErrorChart);
+                    md.startAnimationForLineChart(errorChart);
+                    /* ----------==========     Emails Subscription Chart initialization    ==========---------- */
+                    var dataInsertChart = {
+                        labels: this.xinsertdata,
+                        series: this.yinsertdata,
+                    };
+                    var optionsInsertChart = {
+                        axisX: {
+                            showGrid: false
+                        },
+                        low: 0,
+                        high: @Model.insertmax,
+                        chartPadding: {
+                            top: 0,
+                            right: 5,
+                            bottom: 0,
+                            left: 0
+                        }, plugins: [
+                            Chartist.plugins.tooltip()
+                        ]
+                    };
+                  
+                    var insertChart = Chartist.Bar('#insertChart', dataInsertChart, optionsInsertChart);
+
+                    //start animation for the Emails Subscription Chart
+                    md.startAnimationForBarChart(insertChart);
+                }
+            }
+        }
+    </script>
+
+    if(@Model.graphInserts.Count > 0)
+    {
+    <script>
+            var i = [];
+            home.xinsertdata.push('@Model.graphInserts[9].x.ToString()');
+            home.xinsertdata.push('@Model.graphInserts[8].x.ToString()');
+            home.xinsertdata.push('@Model.graphInserts[7].x.ToString()');
+            home.xinsertdata.push('@Model.graphInserts[6].x.ToString()');
+            home.xinsertdata.push('@Model.graphInserts[5].x.ToString()');
+            home.xinsertdata.push('@Model.graphInserts[4].x.ToString()');
+            home.xinsertdata.push('@Model.graphInserts[3].x.ToString()');
+            home.xinsertdata.push('@Model.graphInserts[2].x.ToString()');
+            home.xinsertdata.push('@Model.graphInserts[1].x.ToString()');
+            home.xinsertdata.push('@Model.graphInserts[0].x.ToString()');
+            i.push({ meta: '@Model.graphInserts[9].desc.ToString()', value: '@Model.graphInserts[9].y.ToString()' });
+            i.push({ meta: '@Model.graphInserts[8].desc.ToString()', value: '@Model.graphInserts[8].y.ToString()' });
+            i.push({ meta: '@Model.graphInserts[7].desc.ToString()', value: '@Model.graphInserts[7].y.ToString()' });
+            i.push({ meta: '@Model.graphInserts[6].desc.ToString()', value: '@Model.graphInserts[6].y.ToString()' });
+            i.push({ meta: '@Model.graphInserts[5].desc.ToString()', value: '@Model.graphInserts[5].y.ToString()' });
+            i.push({ meta: '@Model.graphInserts[4].desc.ToString()', value: '@Model.graphInserts[4].y.ToString()' });
+            i.push({ meta: '@Model.graphInserts[3].desc.ToString()', value: '@Model.graphInserts[3].y.ToString()' });
+            i.push({ meta: '@Model.graphInserts[2].desc.ToString()', value: '@Model.graphInserts[2].y.ToString()' });
+            i.push({ meta: '@Model.graphInserts[1].desc.ToString()', value: '@Model.graphInserts[1].y.ToString()' });
+            i.push({ meta: '@Model.graphInserts[0].desc.ToString()', value: '@Model.graphInserts[0].y.ToString()' });
+            home.yinsertdata.push(i);
+
+
+            var u = [];
+            home.xupdatedata.push('@Model.graphUpdates[9].x.ToString()');
+            home.xupdatedata.push('@Model.graphUpdates[8].x.ToString()');
+            home.xupdatedata.push('@Model.graphUpdates[7].x.ToString()');
+            home.xupdatedata.push('@Model.graphUpdates[6].x.ToString()');
+            home.xupdatedata.push('@Model.graphUpdates[5].x.ToString()');
+            home.xupdatedata.push('@Model.graphUpdates[4].x.ToString()');
+            home.xupdatedata.push('@Model.graphUpdates[3].x.ToString()');
+            home.xupdatedata.push('@Model.graphUpdates[2].x.ToString()');
+            home.xupdatedata.push('@Model.graphUpdates[1].x.ToString()');
+            home.xupdatedata.push('@Model.graphUpdates[0].x.ToString()');
+            u.push({ meta: '@Model.graphUpdates[9].desc.ToString()', value: '@Model.graphUpdates[9].y.ToString()' });
+            u.push({ meta: '@Model.graphUpdates[8].desc.ToString()', value: '@Model.graphUpdates[8].y.ToString()' });
+            u.push({ meta: '@Model.graphUpdates[7].desc.ToString()', value: '@Model.graphUpdates[7].y.ToString()' });
+            u.push({ meta: '@Model.graphUpdates[6].desc.ToString()', value: '@Model.graphUpdates[6].y.ToString()' });
+            u.push({ meta: '@Model.graphUpdates[5].desc.ToString()', value: '@Model.graphUpdates[5].y.ToString()' });
+            u.push({ meta: '@Model.graphUpdates[4].desc.ToString()', value: '@Model.graphUpdates[4].y.ToString()' });
+            u.push({ meta: '@Model.graphUpdates[3].desc.ToString()', value: '@Model.graphUpdates[3].y.ToString()' });
+            u.push({ meta: '@Model.graphUpdates[2].desc.ToString()', value: '@Model.graphUpdates[2].y.ToString()' });
+            u.push({ meta: '@Model.graphUpdates[1].desc.ToString()', value: '@Model.graphUpdates[1].y.ToString()' });
+            u.push({ meta: '@Model.graphUpdates[0].desc.ToString()', value: '@Model.graphUpdates[0].y.ToString()' });
+            home.yupdatedata.push(u);
+
+            var e = [];
+            home.xerrordata.push('@Model.graphErrors[9].x.ToString()');
+            home.xerrordata.push('@Model.graphErrors[8].x.ToString()');
+            home.xerrordata.push('@Model.graphErrors[7].x.ToString()');
+            home.xerrordata.push('@Model.graphErrors[6].x.ToString()');
+            home.xerrordata.push('@Model.graphErrors[5].x.ToString()');
+            home.xerrordata.push('@Model.graphErrors[4].x.ToString()');
+            home.xerrordata.push('@Model.graphErrors[3].x.ToString()');
+            home.xerrordata.push('@Model.graphErrors[2].x.ToString()');
+            home.xerrordata.push('@Model.graphErrors[1].x.ToString()');
+            home.xerrordata.push('@Model.graphErrors[0].x.ToString()');
+            e.push({ meta: '@Model.graphErrors[9].desc.ToString()', value: '@Model.graphErrors[9].y.ToString()' });
+            e.push({ meta: '@Model.graphErrors[8].desc.ToString()', value: '@Model.graphErrors[8].y.ToString()' });
+            e.push({ meta: '@Model.graphErrors[7].desc.ToString()', value: '@Model.graphErrors[7].y.ToString()' });
+            e.push({ meta: '@Model.graphErrors[6].desc.ToString()', value: '@Model.graphErrors[6].y.ToString()' });
+            e.push({ meta: '@Model.graphErrors[5].desc.ToString()', value: '@Model.graphErrors[5].y.ToString()' });
+            e.push({ meta: '@Model.graphErrors[4].desc.ToString()', value: '@Model.graphErrors[4].y.ToString()' });
+            e.push({ meta: '@Model.graphErrors[3].desc.ToString()', value: '@Model.graphErrors[3].y.ToString()' });
+            e.push({ meta: '@Model.graphErrors[2].desc.ToString()', value: '@Model.graphErrors[2].y.ToString()' });
+            e.push({ meta: '@Model.graphErrors[1].desc.ToString()', value: '@Model.graphErrors[1].y.ToString()' });
+            e.push({ meta: '@Model.graphErrors[0].desc.ToString()', value: '@Model.graphErrors[0].y.ToString()' });
+            home.yerrordata.push(e);
+
+    </script>
+    }
+    <script>
+    $(document).ready(function () {
+        home.initDashboardPageCharts();
+    });
+    </script>
+
+}

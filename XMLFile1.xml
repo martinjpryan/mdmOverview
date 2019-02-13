@@ -1,0 +1,54 @@
+﻿<Vendor_Customer_Communication_Data>
+  <SAPIDOCNumber>0000000239901882</SAPIDOCNumber>
+  <EntityCommunicationDetails>
+    <EntityCommunication>
+      <EntityNumber>0000396437</EntityNumber>
+      <EntityType>KNA1</EntityType>
+      <SAPAddressID>0000000239901882</SAPAddressID>
+      <CommunicationType>TEL</CommunicationType>
+      <CommunicationVal>02871344181</CommunicationVal>
+      <R_3_USER>1</R_3_USER>
+      <CONSNUMBER>001</CONSNUMBER>
+    </EntityCommunication>
+    <EntityCommunication>
+      <EntityNumber>0000396437</EntityNumber>
+      <EntityType>KNA1</EntityType>
+      <SAPAddressID>0000000239901882</SAPAddressID>
+      <CommunicationType>SMT</CommunicationType>
+      <CommunicationVal>thomas.mcdermott@moypark.com</CommunicationVal>
+      <R_3_USER />
+      <CONSNUMBER>001</CONSNUMBER>
+    </EntityCommunication>
+    <EntityCommunication>
+      <EntityNumber>0000396437</EntityNumber>
+      <EntityType>KNA1</EntityType>
+      <SAPAddressID>0000000239901882</SAPAddressID>
+      <CommunicationType>ADR</CommunicationType>
+      <CommunicationVal>Testing TMCD 1</CommunicationVal>
+      <R_3_USER />
+      <CONSNUMBER />
+      <FROM_DATE>01/01/0001</FROM_DATE>
+      <TO_DATE>12/31/9999</TO_DATE>
+      <NAME>Testing TMCD 1</NAME>
+      <C_O_NAME>Update****</C_O_NAME>
+      <CITY>Belfast</CITY>
+      <DISTRICT>District</DISTRICT>
+      <POLTL_COD1>BT47 3UR</POLTL_COD1>
+      <POLTL_COD2>BT473UR</POLTL_COD2>
+      <PO_BOX>PO1234</PO_BOX>
+      <STREET>Hollymount</STREET>
+      <HOUSE_NO2>Sup1</HOUSE_NO2>
+      <STR_SUPPL1>Street 2 Test blah</STR_SUPPL1>
+      <STR_SUPPL2>3 Street Test</STR_SUPPL2>
+      <STR_SUPPL3>Street 4</STR_SUPPL3>
+      <LOCATION>Street 5</LOCATION>
+      <COUNTRY>GB</COUNTRY>
+      <COUNTRYISO>GB</COUNTRYISO>
+      <LANGUAGE>E</LANGUAGE>
+      <LANGUAGE_ISO>EN</LANGUAGE_ISO>
+      <REGION>LD</REGION>
+      <SORT1>TEST TMCD</SORT1>
+      <TIME_ZONE>GMTUK</TIME_ZONE>
+    </EntityCommunication>
+  </EntityCommunicationDetails>
+</Vendor_Customer_Communication_Data>

@@ -1,0 +1,403 @@
+﻿@model mdmOverview.Models.dtoRawInterfaceDataSummary
+@{
+    ViewBag.Title = "Master Data";
+}
+
+<div class="row">
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-success card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">info_outline</i>
+                </div>
+                <p class="card-category">Inserts</p>
+                <h3 class="card-title">@Model.insertcount</h3>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">date_range</i> Last 8 Days
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-warning card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">edit</i>
+                </div>
+                <p class="card-category">Updates</p>
+                <h3 class="card-title">
+                    @Model.updatecount
+                </h3>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">date_range</i> Last 8 Days
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-danger card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">error</i>
+                </div>
+                <p class="card-category">Errors</p>
+                <h3 class="card-title">@Model.errorcount</h3>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">date_range</i> Last 8 Days
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="card card-chart">
+            <div class="card-header card-header-success">
+                <div class="ct-chart" id="dailySalesChart"></div>
+            </div>
+            <div class="card-body">
+                <h4 class="card-title">Inserts <small>days ago</small></h4>
+                <p class="card-category">
+                    <span class="text-success"><i class="fa fa-long-arrow-up"></i> 55% </span> on MDM Material Data.
+                </p>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">access_time</i> updated 4 minutes ago
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-chart">
+            <div class="card-header card-header-warning">
+                <div class="ct-chart" id="websiteViewsChart"></div>
+            </div>
+            <div class="card-body">
+                <h4 class="card-title">Updates</h4>
+                <p class="card-category">on MDM Material Data</p>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">edit</i> updated 2 days ago
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-chart">
+            <div class="card-header card-header-danger">
+                <div class="ct-chart" id="completedTasksChart"></div>
+            </div>
+            <div class="card-body">
+                <h4 class="card-title">Errors</h4>
+                <p class="card-category">on MDM Material Data</p>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">access_time</i> updated 2 days ago
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12 col-md-12">
+        <div class="card">
+            <div class="card-header card-header-tabs card-header-primary">
+                <div class="nav-tabs-navigation">
+                    <div class="nav-tabs-wrapper">
+                        <span class="nav-tabs-title">Recent:</span>
+                        <ul class="nav nav-tabs" data-tabs="tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#profile" data-toggle="tab">
+                                    <i class="material-icons">info_outline</i> Inserts
+                                    <div class="ripple-container"></div>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#messages" data-toggle="tab">
+                                    <i class="material-icons">edit</i> Updates
+                                    <div class="ripple-container"></div>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#settings" data-toggle="tab">
+                                    <i class="material-icons">error</i> Errors
+                                    <div class="ripple-container"></div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="profile">
+                        <table class="table">
+                            <tbody>
+                                @foreach (var item in Model.inserts)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" type="checkbox" value="" checked>
+                                                    <span class="form-check-sign">
+                                                        <span class="check"></span>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td>@String.Format("{0:dd/MM/yyyy HH:mm}", item.Created)</td>
+                                        <td>@item.StatusMessage</td>
+                                        <td><a href="@Url.Action("Detail", "Home", new { materialid = @item.Id})">@item.EntityNumber</a></td>
+                                        <td>@item.Data</td>
+                                        <td class="td-actions text-right">
+                                            <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
+                                                <i class="material-icons">edit</i>
+                                            </button>
+                                            <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
+                                                <i class="material-icons">close</i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane" id="messages">
+                        <table class="table">
+                            <tbody>
+                                @foreach (var item in Model.updates)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" type="checkbox" value="" checked>
+                                                    <span class="form-check-sign">
+                                                        <span class="check"></span>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td>@String.Format("{0:dd/MM/yyyy HH:mm}", item.Created)</td>
+                                        <td>@item.StatusMessage</td>
+                                        <td>@item.EntityNumber</td>
+                                        <td>@item.Data</td>
+                                        <td class="td-actions text-right">
+                                            <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
+                                                <i class="material-icons">edit</i>
+                                            </button>
+                                            <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
+                                                <i class="material-icons">close</i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane" id="settings">
+                        <table class="table">
+                            <tbody>
+                                @foreach (var item in Model.errors)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" type="checkbox" value="" checked>
+                                                    <span class="form-check-sign">
+                                                        <span class="check"></span>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td>@String.Format("{0:dd/MM/yyyy HH:mm}", item.Created)</td>
+                                        <td>@item.StatusMessage</td>
+                                        <td>@item.EntityNumber</td>
+                                        <td>@item.Data</td>
+                                        <td class="td-actions text-right">
+                                            <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
+                                                <i class="material-icons">edit</i>
+                                            </button>
+                                            <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
+                                                <i class="material-icons">close</i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts
+{
+    <script>
+        home = {
+            xupdatedata: [],
+            yupdatedata: [],
+            xinsertdata: [],
+            yinsertdata: [],
+            initDashboardPageCharts: function () {
+                if ($('#dailySalesChart').length != 0 || $('#completedTasksChart').length != 0 || $('#websiteViewsChart').length != 0) {
+                    /* ----------==========     Daily Sales Chart initialization    ==========---------- */
+                    dataDailySalesChart = {
+                        labels: this.xinsertdata,
+                        series: this.yinsertdata
+                    };
+                    optionsDailySalesChart = {
+                        low: 0,
+                        high: @Model.insertmax, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+                        chartPadding: {
+                            top: 0,
+                            right: 0,
+                            bottom: 0,
+                            left: 0
+                        }, plugins: [
+                            Chartist.plugins.tooltip()
+                        ],
+                    }
+
+                    var dailySalesChart = new Chartist.Bar('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
+                    md.startAnimationForLineChart(dailySalesChart);
+                    /* ----------==========     Completed Tasks Chart initialization    ==========---------- */
+                    dataCompletedTasksChart = {
+                        labels: this.xupdatedata,
+                        series: this.yupdatedata
+                    };
+
+                    optionsCompletedTasksChart = {
+                        lineSmooth: Chartist.Interpolation.cardinal({
+                            tension: 0
+                        }),
+                        low: 0,
+                        high: 1000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+                        chartPadding: {
+                            top: 0,
+                            right: 0,
+                            bottom: 0,
+                            left: 0
+                        }
+                    }
+
+                    var completedTasksChart = new Chartist.Line('#completedTasksChart', dataCompletedTasksChart, optionsCompletedTasksChart);
+
+                    // start animation for the Completed Tasks Chart - Line Chart
+                    md.startAnimationForLineChart(completedTasksChart);
+
+
+                    /* ----------==========     Emails Subscription Chart initialization    ==========---------- */
+
+                    var dataWebsiteViewsChart = {
+                        labels: this.xupdatedata,
+                        series: this.yupdatedata,
+                    };
+                    var optionsWebsiteViewsChart = {
+                        axisX: {
+                            showGrid: false
+                        },
+                        low: 0,
+                        high: @Model.updatemax,
+                        chartPadding: {
+                            top: 0,
+                            right: 5,
+                            bottom: 0,
+                            left: 0
+                        }, plugins: [
+                            Chartist.plugins.tooltip()
+                        ]
+                    };
+                    var responsiveOptions = [
+                      ['screen and (max-width: 640px)', {
+                          seriesBarDistance: 5,
+                          axisX: {
+                              labelInterpolationFnc: function (value) {
+                                  return value[0];
+                              }
+                          }
+                      }]
+                    ];
+                    var websiteViewsChart = Chartist.Bar('#websiteViewsChart', dataWebsiteViewsChart, optionsWebsiteViewsChart, responsiveOptions);
+
+                    //start animation for the Emails Subscription Chart
+                    md.startAnimationForBarChart(websiteViewsChart);
+                }
+            }
+        }
+     </script>
+
+        if(@Model.graphInserts.Count > 0)
+        {
+        <script>
+            var i = [];
+            home.xinsertdata.push('@Model.graphInserts[9].x.ToString()');
+            home.xinsertdata.push('@Model.graphInserts[8].x.ToString()');
+            home.xinsertdata.push('@Model.graphInserts[7].x.ToString()');
+            home.xinsertdata.push('@Model.graphInserts[6].x.ToString()');
+            home.xinsertdata.push('@Model.graphInserts[5].x.ToString()');
+            home.xinsertdata.push('@Model.graphInserts[4].x.ToString()');
+            home.xinsertdata.push('@Model.graphInserts[3].x.ToString()');
+            home.xinsertdata.push('@Model.graphInserts[2].x.ToString()');
+            home.xinsertdata.push('@Model.graphInserts[1].x.ToString()');
+            home.xinsertdata.push('@Model.graphInserts[0].x.ToString()');
+            i.push({ meta: '@Model.graphInserts[9].desc.ToString()', value: '@Model.graphInserts[9].y.ToString()' });
+            i.push({ meta: '@Model.graphInserts[8].desc.ToString()', value: '@Model.graphInserts[8].y.ToString()' });
+            i.push({ meta: '@Model.graphInserts[7].desc.ToString()', value: '@Model.graphInserts[7].y.ToString()' });
+            i.push({ meta: '@Model.graphInserts[6].desc.ToString()', value: '@Model.graphInserts[6].y.ToString()' });
+            i.push({ meta: '@Model.graphInserts[5].desc.ToString()', value: '@Model.graphInserts[5].y.ToString()' });
+            i.push({ meta: '@Model.graphInserts[4].desc.ToString()', value: '@Model.graphInserts[4].y.ToString()' });
+            i.push({ meta: '@Model.graphInserts[3].desc.ToString()', value: '@Model.graphInserts[3].y.ToString()' });
+            i.push({ meta: '@Model.graphInserts[2].desc.ToString()', value: '@Model.graphInserts[2].y.ToString()' });
+            i.push({ meta: '@Model.graphInserts[1].desc.ToString()', value: '@Model.graphInserts[1].y.ToString()' });
+            i.push({ meta: '@Model.graphInserts[0].desc.ToString()', value: '@Model.graphInserts[0].y.ToString()' });
+            home.yinsertdata.push(i);
+
+
+            var u = [];
+            home.xupdatedata.push('@Model.graphUpdates[9].x.ToString()');
+            home.xupdatedata.push('@Model.graphUpdates[8].x.ToString()');
+            home.xupdatedata.push('@Model.graphUpdates[7].x.ToString()');
+            home.xupdatedata.push('@Model.graphUpdates[6].x.ToString()');
+            home.xupdatedata.push('@Model.graphUpdates[5].x.ToString()');
+            home.xupdatedata.push('@Model.graphUpdates[4].x.ToString()');
+            home.xupdatedata.push('@Model.graphUpdates[3].x.ToString()');
+            home.xupdatedata.push('@Model.graphUpdates[2].x.ToString()');
+            home.xupdatedata.push('@Model.graphUpdates[1].x.ToString()');
+            home.xupdatedata.push('@Model.graphUpdates[0].x.ToString()');
+            u.push({ meta: '@Model.graphUpdates[9].desc.ToString()', value: '@Model.graphUpdates[9].y.ToString()' });
+            u.push({ meta: '@Model.graphUpdates[8].desc.ToString()', value: '@Model.graphUpdates[8].y.ToString()' });
+            u.push({ meta: '@Model.graphUpdates[7].desc.ToString()', value: '@Model.graphUpdates[7].y.ToString()' });
+            u.push({ meta: '@Model.graphUpdates[6].desc.ToString()', value: '@Model.graphUpdates[6].y.ToString()' });
+            u.push({ meta: '@Model.graphUpdates[5].desc.ToString()', value: '@Model.graphUpdates[5].y.ToString()' });
+            u.push({ meta: '@Model.graphUpdates[4].desc.ToString()', value: '@Model.graphUpdates[4].y.ToString()' });
+            u.push({ meta: '@Model.graphUpdates[3].desc.ToString()', value: '@Model.graphUpdates[3].y.ToString()' });
+            u.push({ meta: '@Model.graphUpdates[2].desc.ToString()', value: '@Model.graphUpdates[2].y.ToString()' });
+            u.push({ meta: '@Model.graphUpdates[1].desc.ToString()', value: '@Model.graphUpdates[1].y.ToString()' });
+            u.push({ meta: '@Model.graphUpdates[0].desc.ToString()', value: '@Model.graphUpdates[0].y.ToString()' });
+            home.yupdatedata.push(u);
+        </script>
+        }
+<script>
+    $(document).ready(function () {
+        home.initDashboardPageCharts();
+    });
+</script>
+
+    }

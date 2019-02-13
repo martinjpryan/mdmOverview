@@ -1,0 +1,138 @@
+﻿@model mdmOverview.Models.MoyPark.dtoProduct
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-md-6">
+        <div style="margin-top: 0px; padding-top: 0px;" class="card">
+            <div class="card-header card-header-primary">
+                <h4 class="card-title ">Material Product Detail </h4>
+                <p class="card-category"> All Mapped Product Details from MDM </p>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class=" text-primary">
+                        <th>
+                            Property
+                        </th>
+                        <th>
+                            Value
+                        </th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>
+                                    <strong>Material ID</strong>
+                                </th>
+                                <td>
+                                    @Model.materialid
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <strong>Material Description</strong>
+                                </th>
+                                <td>
+                                    @Model.description
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <strong>SAP Doc ID</strong>
+                                </th>
+                                <td>
+                                    @Model.sapdocid
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <strong>Legacy Code</strong>
+                                </th>
+                                <td>
+                                    @Model.legacycode
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <strong>MDM Rec Guid</strong>
+                                </th>
+                                <td>
+                                    @Model.recguid
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <strong>Units</strong>
+                                </th>
+                                <td>
+                                    @if(Model.units.Count > 0)
+                                    {
+                                        foreach(var i in Model.units)
+                                        {
+                                            <span style="margin-right: 5px;">@i.pricingUM</span>
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-6">
+        <div style="margin-top: 0px; padding-top: 0px;" class="card">
+            <div class="card-header card-header-primary">
+                <h4 class="card-title ">Product Sites </h4>
+                <p class="card-category"> All Mapped Sites from MDM</p>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class=" text-primary">
+                        <th>
+                            Property
+                        </th>
+                        <th>
+                            Value
+                        </th>
+                        </thead>
+                        <tbody>
+                            @if (Model.sites.Count > 0)
+                            {
+                                foreach (var item in Model.sites)
+                                {
+                                    <tr>
+                                        <th>
+                                            <strong>@item.legacysitecode</strong>
+                                        </th>
+                                        <td>
+                                            <strong>@item.legacysitedesc</strong>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <th colspan="2">
+                                        <strong>No Sites in Material XML</strong>
+                                    </th>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
